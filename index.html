@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hair Health Checker - Ayurvaan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    .container {
+      max-width: 750px;
+      margin: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #1e6b43;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #1e6b43;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      font-size: 18px;
+      border-radius: 8px;
+      background-color: #e8f5e9;
+      color: #1b5e20;
+      text-align: center;
+    }
+    .whatsapp-button {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .whatsapp-button a {
+      background-color: #25D366;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 18px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💇‍♀️ Hair Health Checker - Ayurvaan</h1>
+    <form id="hairForm">
+      <div id="questions"></div>
+      <button type="button" onclick="calculateResult()">अपनी Hair Health Check करें</button>
+    </form>
+    <div id="result"></div>
+    <div class="whatsapp-button" id="whatsappLink" style="display: none;">
+      <a id="whatsappButton" href="#" target="_blank">WhatsApp पर Buy करें</a>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "Aapke baal roz kitne girte hain?",
+      "Scalp me dandruff rehta hai?",
+      "Baal dry ya frizzy lagte hain?",
+      "Hair fall kitne mahine se hai?",
+      "Scalp me khujli hoti hai?",
+      "Kya aapka diet healthy hai?",
+      "Stress zyada rehta hai?",
+      "Baal patle lagte hain?",
+      "Kya aap Ayurvedic oil lagate hain?",
+      "Kya aap styling tools ka use karte hain?",
+      "Chemical-free shampoo use karte hain?",
+      "Haftay me kitni baar baal dhote hain?",
+      "Baalon me smell aati hai kabhi?",
+      "Baal jaldi oily ho jaate hain?",
+      "Scalp me pimples ya rashes hote hain?",
+      "Exercise karte ho regularly?",
+      "Family me kisi ko hair fall ki dikkat hai?",
+      "Hard water ka use hota hai?",
+      "Neend 7 ghante ya usse kam rehti hai?",
+      "Hair serum ka use karte hain?",
+      "Baalon ka shine kam ho gaya hai?",
+      "Baal uneven grow karte hain?",
+      "Comb karte waqt baal tut-te hain?",
+      "Kya kabhi hair spa liya hai?",
+      "Scalp dry feel karta hai?",
+      "Dandruff ke flakes chipak jaate hain?",
+      "Baal dye karne ki aadat hai?",
+      "Hair roots weak lagte hain?",
+      "Split ends ki dikkat hai?",
+      "Scalp me kabhi gath ya sujan hui hai?"
+    ];
+
+    const optionsList = [
+      ["Bahut kam girte hain", "Thoda girte hain", "Roz zyada girte hain"],
+      ["Nahi hota", "Kabhi kabhi", "Hamesha hota hai"],
+      ["Soft hote hain", "Kabhi kabhi dry", "Hamesha dry hote hain"],
+      ["1 mahina", "3-6 mahine", "6 mahine se zyada"],
+      ["Nahi hoti", "Kabhi kabhi", "Roz hoti hai"],
+      ["Healthy hai", "Kabhi kabhi junk", "Roz junk food"],
+      ["Nahi rehta", "Thoda rehta hai", "Roz rehta hai"],
+      ["Nahi patle", "Thoda patle", "Bahut patle"],
+      ["Roz lagate hain", "Kabhi kabhi", "Kabhi nahi"],
+      ["Nahi karte", "Rarely", "Roz karte hain"],
+      ["Haan", "Kabhi kabhi", "Nahi"],
+      ["2-3 baar", "1 baar", "Zyada baar nahi"],
+      ["Nahi aati", "Kabhi kabhi", "Roz aati hai"],
+      ["Nahi hote", "Kabhi kabhi", "Roz oily"],
+      ["Kabhi nahi", "Kabhi kabhi", "Roz hote hain"],
+      ["Roz karte hain", "Kabhi kabhi", "Nahi karte"],
+      ["Nahi", "Kisi ek ko", "Family history hai"],
+      ["Filtered water", "Mix use", "Hard water"],
+      ["8 ghante se zyada", "6-7 ghante", "Kam neend"],
+      ["Use nahi karte", "Kabhi kabhi", "Roz karte hain"],
+      ["Shiny hain", "Thoda kam", "Bilkul dull"],
+      ["Evenly grow", "Thoda uneven", "Zyada uneven"],
+      ["Nahi tut-te", "Kabhi kabhi", "Roz tut-te hain"],
+      ["Hamesha lete hain", "Kabhi kabhi", "Kabhi nahi"],
+      ["Nahi dry", "Thoda dry", "Zyada dry"],
+      ["Nahi chipakte", "Kabhi kabhi", "Roz chipakte hain"],
+      ["Nahi", "Kabhi kabhi", "Roz dye karte hain"],
+      ["Strong lagte hain", "Thoda weak", "Bahut weak"],
+      ["Nahi", "Thoda sa", "Bahut zyada"],
+      ["Nahi hoti", "Kabhi kabhi", "Hamesha hoti hai"]
+    ];
+
+    const questionsDiv = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      let selectHTML = `<label>${i + 1}. ${q}</label><select name="q${i + 1}">`;
+      optionsList[i].forEach((option, index) => {
+        selectHTML += `<option value="${index + 1}">${option}</option>`;
+      });
+      selectHTML += '</select>';
+      div.innerHTML = selectHTML;
+      questionsDiv.appendChild(div);
+    });
+
+    function calculateResult() {
+      const form = document.forms['hairForm'];
+      let totalScore = 0;
+      const totalQuestions = questions.length;
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        totalScore += parseInt(form[`q${i}`].value);
+      }
+
+      const percentage = Math.round((totalScore - totalQuestions) / (2 * totalQuestions) * 100);
+      let resultText = '';
+      let whatsappMessage = '';
+
+      if (percentage <= 25) {
+        resultText = `✅ Aapki hair health achhi hai! Bas thoda regular care rakhein. (${percentage}% problem)`;
+        whatsappMessage = `Meri hair health achhi hai, par main aur care ke liye Ayurvaan Hair Oil lena chahta hoon.`;
+      } else if (percentage <= 50) {
+        resultText = `⚠️ Aapke baalon me kuchh dikkat hai. Ayurvaan KeshAmrit Hair Oil aapko naturally madad karega. (${percentage}% problem)`;
+        whatsappMessage = `Mujhe hair fall aur dryness ka issue hai, Ayurvaan KeshAmrit Oil chahiye mujhe.`;
+      } else {
+        resultText = `❌ Aapki hair health me kaafi problem hai. Lekin chinta mat kijiye! Ayurvaan KeshAmrit Hair Oil aapke liye trusted Ayurvedic upay hai. (${percentage}% problem)`;
+        whatsappMessage = `Mere baalon me serious problem hai, mujhe Ayurvaan KeshAmrit Hair Oil lena hai.`;
+      }
+
+      document.getElementById("result").innerText = resultText;
+      document.getElementById("whatsappLink").style.display = "block";
+      document.getElementById("whatsappButton").href = `https://wa.me/919696244869?text=${encodeURIComponent(whatsappMessage)}`;
+    }
+  </script>
+</body>
+</html>
